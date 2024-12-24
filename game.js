@@ -92,18 +92,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const items = [
         new Item('剣', 0, 10, 0, 0, 100),
         new Item('盾', 0, 0, 10, 0, 100),
-        new Item('靴', 0, 0, 0, 10, 100),
-        new Item('強いペン', 500, 500, 500, 5000, 500)
+        new Item('靴', 0, 0, 0, 10, 100)
     ];
 
     const monsters = [
         new Entity('スライム', 30, 5, 2, 3),
         new Entity('ゴブリン', 50, 8, 3, 6),
         new Entity('オーク', 80, 15, 10, 5),
-        new Entity('ドラゴン', 150, 30, 20, 10),
-        new Entity('がみがみおやじ', 300, 60, 40, 20),
-        new Entity('ロードナイト', 600, 90, 80, 40),
-        new Entity('ハム', 1200, 1000, 1000, 1000)
+        new Entity('ドラゴン', 150, 30, 20, 10)
     ];
 
     let currentMonsterIndex = 0;
@@ -208,8 +204,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function startAdventure() {
         if (currentMonsterIndex >= monsters.length) {
-            currentMonsterIndex = 0;
-            logMessage("全てのモンスターを倒しました！最初から再開します");
+            logMessage("全てのモンスターを倒しました！");
             return;
         }
 
@@ -318,7 +313,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const y = eventMove.touches[0].clientY;
             const yDiff = y - startY;
 
-            if (window.scrollY === 0 && yDiff > 0) {
+            if (yDiff > 0 && document.documentElement.scrollTop === 0) {
                 prevent = true;
                 eventMove.preventDefault();
             }
