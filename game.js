@@ -31,8 +31,7 @@ function levelUp() {
 
 function logMessage(message) {
   const log = document.getElementById('log');
-  log.innerText += message + "
-";
+  log.innerText += message + "";
 }
 
 document.getElementById('fightButton').addEventListener('click', () => {
