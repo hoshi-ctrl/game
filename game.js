@@ -158,7 +158,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function logMessage(message) {
         const logElem = document.getElementById('battleLog');
-        logElem.innerHTML += `<div>${message}</div>`;
+        const newLogEntry = document.createElement('div');
+        newLogEntry.textContent = message;
+        logElem.appendChild(newLogEntry);
+
+        // ログが10行を超えたら最古のエントリを削除
+        while (logElem.children.length > 10) {
+            logElem.removeChild(logElem.firstChild);
+        }
     }
 
     document.getElementById('storeButton').addEventListener('click', showStore);
@@ -204,6 +211,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 logMessage('プレイヤーは死んでしまった...');
                 // プレイヤーのHPを回復
                 player.hp = player.job.baseStats.hp;
+                currentMonsterIndex = 0;
                 break;
             }
         }
