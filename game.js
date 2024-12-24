@@ -17,12 +17,20 @@ document.addEventListener('DOMContentLoaded', () => {
             this.exp = exp;
             this.inventory = [];
         }
+        changeJob(newJob) {
+            this.job = newJob;
+            this.hp = newJob.baseStats.hp;
+            this.attack = newJob.baseStats.attack;
+            this.defense = newJob.baseStats.defense;
+            this.speed = newJob.baseStats.speed;
+        }
     }
 
     class Job {
         constructor(name, baseStats) {
             this.name = name;
             this.baseStats = baseStats;
+            this.abilities = abilities;
         }
     }
 
@@ -38,7 +46,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const jobs = {
-        villager: new Job('村人', { hp: 100, attack: 10, defense: 5, speed: 5 })
+        villager: new Job('村人', { hp: 100, attack: 10, defense: 5, speed: 5 }),
+        knight: new Job('騎士', { hp: 200, attack: 30, defense: 20, speed: 10 }),
+        mage: new Job('魔法使い', { hp: 80, attack: 50, defense: 5, speed: 15 })
     };
 
     const items = [
@@ -89,6 +99,30 @@ document.addEventListener('DOMContentLoaded', () => {
         storeElem.style.display = 'block';
     }
 
+    function showTemple() {
+        const templeElem = document.getElementById('temple');
+        const jobListElem = document.getElementById('jobList');
+        jobListElem.innerHTML = '';
+        for (const jobName in jobs) {
+            const job = jobs[jobName];
+            const li = document.createElement('li');
+            li.textContent = `${job.name} (HP: ${job.baseStats.hp}, 攻撃力: ${job.baseStats.attack}, 防御力: ${job.baseStats.defense}, 素早さ: ${job.baseStats.speed})`;
+            li.addEventListener('click', () => {
+                if (player.exp >= 50) { // ここでは50EXPでジョブを変更できる例
+                    player.exp -= 50;
+                    player.changeJob(job);
+                    updatePlayerStats();
+                    logMessage(`${job.name}にジョブが変更された！`);
+                    templeElem.style.display = 'none';
+                } else {
+                    logMessage('経験値が足りません！');
+                }
+            });
+            jobListElem.appendChild(li);
+        }
+        templeElem.style.display = 'block';
+    }
+
     function logMessage(message) {
         const logElem = document.getElementById('battleLog');
         logElem.innerHTML += `<div>${message}</div>`;
@@ -98,6 +132,9 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('adventureButton').addEventListener('click', startAdventure);
     document.getElementById('closeStore').addEventListener('click', () => {
         document.getElementById('store').style.display = 'none';
+    });
+    document.getElementById('closeTemple').addEventListener('click', () => {
+        document.getElementById('temple').style.display = 'none';
     });
 
     function startAdventure() {
