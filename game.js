@@ -204,7 +204,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function startAdventure() {
         if (currentMonsterIndex >= monsters.length) {
-            logMessage("全てのモンスターを倒しました！");
+            currentMonsterIndex = 0;
+            logMessage("全てのモンスターを倒しました！最初から再開します");
             return;
         }
 
