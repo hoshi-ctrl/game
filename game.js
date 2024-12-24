@@ -34,6 +34,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 logMessage(`${this.name}は${ability.name}を使った！`);
             }
         }
+
+        chooseAction(target) {
+            const useAbilityChance = 0.3; // 30%の確率でアビリティを使用
+            if (this.abilities.length > 0 && Math.random() < useAbilityChance) {
+                const ability = this.abilities[Math.floor(Math.random() * this.abilities.length)];
+                this.useAbility(ability, target);
+            } else {
+                const damage = Math.max(this.attack - target.defense, 0);
+                target.hp -= damage;
+                logMessage(`${this.name}の攻撃！ ${target.name}に${damage}のダメージ！`);
+            }
+        }
     }
 
     class Job {
@@ -188,25 +200,24 @@ document.addEventListener('DOMContentLoaded', () => {
         logMessage(`${monster.name}が現れた！`);
 
         while (player.hp > 0 && monster.hp > 0) {
-            const playerAttack = Math.max(player.attack - monster.defense, 0);
-            const monsterAttack = Math.max(monster.attack - player.defense, 0);
+            player.chooseAction(monster);
 
-            monster.hp -= playerAttack;
             if (monster.hp <= 0) {
                 logMessage(`${monster.name}を倒した！ 経験値とお金を得た！`);
                 player.exp += 10;
                 player.money += 20;
                 currentMonsterIndex++;
 
-                // 次のモンスターがいる場合は次の冒険で出現
                 if (currentMonsterIndex < monsters.length) {
                     logMessage(`${monsters[currentMonsterIndex].name}が次に出現します。`);
                 }
-
                 break;
             }
 
-            player.hp -= monsterAttack;
+            const damage = Math.max(monster.attack - player.defense, 0);
+            player.hp -= damage;
+            logMessage(`${monster.name}の攻撃！ ${player.name}に${damage}のダメージ！`);
+
             if (player.hp <= 0) {
                 logMessage('プレイヤーは死んでしまった...');
                 // プレイヤーのHPを回復し、モンスターリストをリセット
