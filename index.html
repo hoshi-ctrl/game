@@ -3,50 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RPG Game</title>
+    <title>簡単なRPGゲーム</title>
     <style>
         body {
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
             height: 100vh;
             margin: 0;
             background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
         }
-        #gameInterface {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin: 20px;
-        }
-        #store, #temple, #adventure, #save {
+        #gameInfo, #controls, #log, #store {
             margin: 10px;
-            padding: 10px 20px;
+            padding: 20px;
             border: 1px solid #000;
             background-color: #fff;
         }
-        #gameInfo, #battleLog, #inventory {
-            margin: 20px;
-            padding: 10px;
-            border: 1px solid #000;
-            background-color: #fff;
-            width: 80%;
+        #store {
+            display: none;
         }
     </style>
 </head>
 <body>
-    <div id="gameInterface">
-        <div id="gameInfo">
-            <p id="playerStats">プレイヤー情報</p>
-        </div>
-        <div id="buttons">
-            <button id="store">お店</button>
-            <button id="temple">神殿</button>
-            <button id="adventure">冒険</button>
-            <button id="save">保存</button>
-        </div>
-        <div id="battleLog">ログ</div>
-        <div id="inventory">インベントリ</div>
+    <div id="gameInfo">
+        <h2>プレイヤー情報</h2>
+        <div id="playerStats"></div>
+    </div>
+    <div id="controls">
+        <button id="storeButton">お店</button>
+        <button id="adventureButton">冒険</button>
+    </div>
+    <div id="log">
+        <h2>ログ</h2>
+        <div id="battleLog"></div>
+    </div>
+    <div id="store">
+        <h2>お店の商品</h2>
+        <ul id="storeItems"></ul>
+        <button id="closeStore">閉じる</button>
     </div>
     <script src="game.js"></script>
 </body>
