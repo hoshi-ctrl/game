@@ -9,27 +9,32 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            height: 100vh;
+            justify-content: flex-start;
             margin: 0;
             background-color: #f0f0f0;
             font-family: Arial, sans-serif;
+            height: 100vh;
+            overflow: hidden; /* 全体のスクロールを無効化 */
         }
-
+        #container {
+            overflow-y: auto; /* 内部のスクロールを有効化 */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 500px;
+        }
         #gameInfo, #controls, #log, #store, #temple {
             margin: 10px;
             padding: 20px;
             border: 1px solid #000;
             background-color: #fff;
             width: 90%;
-            max-width: 500px;
             box-sizing: border-box;
         }
-
         #store, #temple {
             display: none;
         }
-
         button {
             display: inline-block;
             width: calc(100% - 10px);
@@ -42,48 +47,47 @@
             border-radius: 4px;
             cursor: pointer;
         }
-
         button:hover {
             background-color: #0056b3;
         }
-
         #battleLog {
             max-height: 200px;
             overflow-y: auto;
             border: 1px solid #ccc;
             padding: 10px;
         }
-
         #battleLog div {
             margin-bottom: 8px;
         }
     </style>
 </head>
 <body>
-    <div id="gameInfo">
-        <h2>プレイヤー情報</h2>
-        <div id="playerStats"></div>
-    </div>
-    <div id="store">
-        <h2>お店の商品</h2>
-        <ul id="storeItems"></ul>
-        <button id="closeStore">閉じる</button>
-    </div>
-    <div id="temple">
-        <h2>ジョブの変更</h2>
-        <ul id="jobList"></ul>
-        <button id="closeTemple">閉じる</button>
-    </div>
-    <div id="controls">
-        <button id="storeButton">お店</button>
-        <button id="adventureButton">冒険</button>
-        <button id="templeButton">神殿</button>
-        <button id="saveButton">セーブ</button>
-        <button id="loadButton">ロード</button>
-    </div>
-    <div id="log">
-        <h2>ログ</h2>
-        <div id="battleLog"></div>
+    <div id="container">
+        <div id="gameInfo">
+            <h2>プレイヤー情報</h2>
+            <div id="playerStats"></div>
+        </div>
+        <div id="store">
+            <h2>お店の商品</h2>
+            <ul id="storeItems"></ul>
+            <button id="closeStore">閉じる</button>
+        </div>
+        <div id="temple">
+            <h2>ジョブの変更</h2>
+            <ul id="jobList"></ul>
+            <button id="closeTemple">閉じる</button>
+        </div>
+        <div id="controls">
+            <button id="storeButton">お店</button>
+            <button id="adventureButton">冒険</button>
+            <button id="templeButton">神殿</button>
+            <button id="saveButton">セーブ</button>
+            <button id="loadButton">ロード</button>
+        </div>
+        <div id="log">
+            <h2>ログ</h2>
+            <div id="battleLog"></div>
+        </div>
     </div>
     <script src="game.js"></script>
 </body>
