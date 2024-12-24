@@ -24,7 +24,7 @@ function levelUp() {
   if (player.exp >= player.expToNextLevel) {
     player.level += 1;
     player.exp -= player.expToNextLevel;
-    player.expToNextLevel *= 1.5; // 次のレベルまでのEXPを増加させる
+    player.expToNextLevel = Math.floor(player.expToNextLevel * 1.5); // 次のレベルまでのEXPを増加させる
     logMessage("レベルアップ！ レベル: " + player.level);
   }
 }
@@ -48,7 +48,7 @@ document.getElementById('fightButton').addEventListener('click', () => {
     player.money += enemy.money;
     logMessage("敵を倒した！ EXP: " + enemy.exp + ", お金: " + enemy.money);
     enemy = createEnemy();
-    player.hp = Math.min(player.hp, 100); // 戦闘後にHPを100まで回復させる（超過分は回復しない）
+    player.hp = 100; // 戦闘後にHPを最大値に回復
   } else {
     logMessage("プレイヤーは死亡しました。");
     // ゲームオーバー処理
@@ -56,6 +56,7 @@ document.getElementById('fightButton').addEventListener('click', () => {
     player.exp = 0;
     player.money = 0;
     player.level = 1;
+    enemy = createEnemy(); // 敵をリセット
   }
 
   levelUp();
@@ -67,21 +68,22 @@ document.getElementById('buyWeaponButton').addEventListener('click', () => {
     player.money -= 100;
     player.attack += 10;  // 武器購入で攻撃力 +10
     logMessage("攻撃力が 10 増加しました。");
-    updateStatus();
   } else {
     logMessage("お金が足りません。");
   }
+  updateStatus();
 });
 
 document.getElementById('buyArmorButton').addEventListener('click', () => {
   if (player.money >= 100) {
     player.money -= 100;
     player.hp += 20;  // 防具購入でHP +20
-    logMessage("HP が 20 増加しました。");
-    updateStatus();
+    logMessage("HP が 20 増加しましたが、HPの最大値は100です。");
+    if (player.hp > 100) player.hp = 100; // HPの最大値を制限
   } else {
     logMessage("お金が足りません。");
   }
+  updateStatus();
 });
 
 document.getElementById('saveButton').addEventListener('click', () => {
@@ -100,6 +102,9 @@ function loadGame() {
   }
 }
 
+// 画面読み込み時に保存されたデータをロード
+window.addEventListener('load', loadGame);
+updateStatus();
 // 画面読み込み時に保存されたデータをロード
 window.addEventListener('load', loadGame);
 updateStatus();
