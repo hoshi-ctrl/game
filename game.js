@@ -119,8 +119,18 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
     }
 
+    function showElement(elementId) {
+        const elements = document.querySelectorAll('#store, #temple');
+        elements.forEach(element => {
+            if (element.id === elementId) {
+                element.style.display = 'block';
+            } else {
+                element.style.display = 'none';
+            }
+        });
+    }
+
     function showStore() {
-        const storeElem = document.getElementById('store');
         const storeItemsElem = document.getElementById('storeItems');
         storeItemsElem.innerHTML = '';
         items.forEach((item, index) => {
@@ -142,11 +152,10 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             storeItemsElem.appendChild(li);
         });
-        storeElem.style.display = 'block';
+        showElement('store');
     }
 
     function showTemple() {
-        const templeElem = document.getElementById('temple');
         const jobListElem = document.getElementById('jobList');
         jobListElem.innerHTML = '';
         for (const jobName in jobs) {
@@ -159,14 +168,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     player.changeJob(job);
                     updatePlayerStats();
                     logMessage(`${job.name}にジョブが変更された！`);
-                    templeElem.style.display = 'none';
+                    showElement(null); // 設定しないことで、要素を非表示にする
                 } else {
                     logMessage('経験値が足りません！');
                 }
             });
             jobListElem.appendChild(li);
         }
-        templeElem.style.display = 'block';
+        showElement('temple');
     }
 
     function logMessage(message) {
@@ -185,11 +194,13 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('adventureButton').addEventListener('click', startAdventure);
     document.getElementById('templeButton').addEventListener('click', showTemple);
     document.getElementById('closeStore').addEventListener('click', () => {
-        document.getElementById('store').style.display = 'none';
+        showElement(null); // 設定しないことで、要素を非表示にする
     });
     document.getElementById('closeTemple').addEventListener('click', () => {
-        document.getElementById('temple').style.display = 'none';
+        showElement(null); // 設定しないことで、要素を非表示にする
     });
+    document.getElementById('saveButton').addEventListener('click', saveGame);
+    document.getElementById('loadButton').addEventListener('click', loadGame);
 
     function startAdventure() {
         if (currentMonsterIndex >= monsters.length) {
@@ -233,5 +244,63 @@ document.addEventListener('DOMContentLoaded', () => {
         updatePlayerStats();
     }
 
+    function saveGame() {
+        const gameState = {
+            player: {
+                name: player.name,
+                job: player.job.name,
+                hp: player.hp,
+                attack: player.attack,
+                defense: player.defense,
+                speed: player.speed,
+                money: player.money,
+                exp: player.exp,
+                inventory: player.inventory.map(item => item.name)
+            },
+            currentMonsterIndex
+        };
+        localStorage.setItem('gameState', JSON.stringify(gameState));
+        logMessage('ゲームを保存しました。');
+    }
+
+    function loadGame() {
+        const savedGameState = localStorage.getItem('gameState');
+        if (savedGameState) {
+            const gameState = JSON.parse(savedGameState);
+
+            player.name = gameState.player.name;
+            player.changeJob(jobs[gameState.player.job]);
+            player.hp = gameState.player.hp;
+            player.attack = gameState.player.attack;
+            player.defense = gameState.player.defense;
+            player.speed = gameState.player.speed;
+            player.money = gameState.player.money;
+            player.exp = gameState.player.exp;
+            player.inventory = gameState.player.inventory.map(itemName => items.find(item => item.name === itemName));
+            currentMonsterIndex = gameState.currentMonsterIndex;
+
+            updatePlayerStats();
+            logMessage('ゲームをロードしました。');
+        } else {
+            logMessage('保存されたゲームがありません。');
+        }
+    }
+
     updatePlayerStats();
+
+    // プル・トゥ・リフレッシュの防止
+    let touchStartY = 0;
+
+    window.addEventListener('touchstart', (e) => {
+        touchStartY = e.touches[0].clientY;
+    });
+
+    window.addEventListener('touchmove', (e) => {
+        const touchMoveY = e.touches[0].clientY;
+        const touchDiff = touchMoveY - touchStartY;
+
+        if (window.scrollY === 0 && touchDiff > 0) {
+            e.preventDefault();
+        }
+    }, { passive: false });
 });
