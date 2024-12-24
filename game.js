@@ -16,21 +16,38 @@ document.addEventListener('DOMContentLoaded', () => {
             this.money = money;
             this.exp = exp;
             this.inventory = [];
+            this.abilities = job.abilities;
         }
+
         changeJob(newJob) {
             this.job = newJob;
             this.hp = newJob.baseStats.hp;
             this.attack = newJob.baseStats.attack;
             this.defense = newJob.baseStats.defense;
             this.speed = newJob.baseStats.speed;
+            this.abilities = newJob.abilities;
+        }
+
+        useAbility(ability, target) {
+            if (this.abilities.includes(ability) && typeof ability.use === 'function') {
+                ability.use(this, target);
+                logMessage(`${this.name}は${ability.name}を使った！`);
+            }
         }
     }
 
     class Job {
-        constructor(name, baseStats) {
+        constructor(name, baseStats, abilities = []) {
             this.name = name;
             this.baseStats = baseStats;
             this.abilities = abilities;
+        }
+    }
+
+    class Ability {
+        constructor(name, use) {
+            this.name = name;
+            this.use = use;
         }
     }
 
@@ -45,10 +62,18 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    const heal = new Ability('回復', (user, target) => {
+        target.hp = Math.min(target.hp + 50, user.job.baseStats.hp);
+    });
+
+    const fireball = new Ability('ファイアボール', (user, target) => {
+        target.hp -= Math.max(user.attack * 2 - target.defense, 0);
+    });
+
     const jobs = {
         villager: new Job('村人', { hp: 100, attack: 10, defense: 5, speed: 5 }),
-        knight: new Job('騎士', { hp: 200, attack: 30, defense: 20, speed: 10 }),
-        mage: new Job('魔法使い', { hp: 80, attack: 50, defense: 5, speed: 15 })
+        knight: new Job('騎士', { hp: 200, attack: 30, defense: 20, speed: 10 }, [heal]),
+        mage: new Job('魔法使い', { hp: 80, attack: 50, defense: 5, speed: 15 }, [fireball])
     };
 
     const items = [
@@ -138,6 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('storeButton').addEventListener('click', showStore);
     document.getElementById('adventureButton').addEventListener('click', startAdventure);
+    document.getElementById('templeButton').addEventListener('click', showTemple);
     document.getElementById('closeStore').addEventListener('click', () => {
         document.getElementById('store').style.display = 'none';
     });
@@ -146,7 +172,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function startAdventure() {
-        if(currentMonsterIndex >= monsters.length) {
+        if (currentMonsterIndex >= monsters.length) {
             logMessage("全てのモンスターを倒しました！");
             return;
         }
@@ -154,12 +180,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const monster = monsters[currentMonsterIndex];
         logMessage(`${monster.name}が現れた！`);
 
-        while(player.hp > 0 && monster.hp > 0) {
+        while (player.hp > 0 && monster.hp > 0) {
             const playerAttack = Math.max(player.attack - monster.defense, 0);
             const monsterAttack = Math.max(monster.attack - player.defense, 0);
 
             monster.hp -= playerAttack;
-            if(monster.hp <= 0) {
+            if (monster.hp <= 0) {
                 logMessage(`${monster.name}を倒した！ 経験値とお金を得た！`);
                 player.exp += 10;
                 player.money += 20;
@@ -174,7 +200,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             player.hp -= monsterAttack;
-            if(player.hp <= 0) {
+            if (player.hp <= 0) {
                 logMessage('プレイヤーは死んでしまった...');
                 // プレイヤーのHPを回復
                 player.hp = player.job.baseStats.hp;
