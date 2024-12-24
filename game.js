@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 const damage = Math.max(this.attack - target.defense, 0);
                 target.hp -= damage;
-                logMessage(`${this.name}の攻撃！ ${target.name}に${damage}のダメージ！`);
+                logMessage(`${this.name}の攻撃！${target.name}に${damage}のダメージ！`);
             }
         }
     }
@@ -168,7 +168,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     player.changeJob(job);
                     updatePlayerStats();
                     logMessage(`${job.name}にジョブが変更された！`);
-                    showElement(null); // 設定しないことで、要素を非表示にする
+                    showElement(null); // 非表示にする
                 } else {
                     logMessage('経験値が足りません！');
                 }
@@ -194,10 +194,10 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('adventureButton').addEventListener('click', startAdventure);
     document.getElementById('templeButton').addEventListener('click', showTemple);
     document.getElementById('closeStore').addEventListener('click', () => {
-        showElement(null); // 設定しないことで、要素を非表示にする
+        showElement(null); // 非表示にする
     });
     document.getElementById('closeTemple').addEventListener('click', () => {
-        showElement(null); // 設定しないことで、要素を非表示にする
+        showElement(null); // 非表示にする
     });
     document.getElementById('saveButton').addEventListener('click', saveGame);
     document.getElementById('loadButton').addEventListener('click', loadGame);
@@ -216,7 +216,7 @@ document.addEventListener('DOMContentLoaded', () => {
             player.chooseAction(monster);
 
             if (monster.hp <= 0) {
-                logMessage(`${monster.name}を倒した！ 経験値とお金を得た！`);
+                logMessage(`${monster.name}を倒した！経験値とお金を得た！`);
                 player.exp += 10;
                 player.money += 20;
                 currentMonsterIndex++;
@@ -229,7 +229,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const damage = Math.max(monster.attack - player.defense, 0);
             player.hp -= damage;
-            logMessage(`${monster.name}の攻撃！ ${player.name}に${damage}のダメージ！`);
+            logMessage(`${monster.name}の攻撃！${player.name}に${damage}のダメージ！`);
 
             if (player.hp <= 0) {
                 logMessage('プレイヤーは死んでしまった...');
@@ -302,5 +302,28 @@ document.addEventListener('DOMContentLoaded', () => {
         if (window.scrollY === 0 && touchDiff > 0) {
             e.preventDefault();
         }
+    }, { passive: false });
+
+    document.body.addEventListener('touchstart', (event) => {
+        if (event.touches.length !== 1) { return; }
+        const startY = event.touches[0].clientY;
+        let prevent = false;
+
+        document.body.addEventListener('touchmove', (eventMove) => {
+            const y = eventMove.touches[0].clientY;
+            const yDiff = y - startY;
+
+            if (window.scrollY === 0 && yDiff > 0) {
+                prevent = true;
+                eventMove.preventDefault();
+            }
+        }, { passive: false });
+
+        document.body.addEventListener('touchend', (eventEnd) => {
+            if (prevent) {
+                eventEnd.preventDefault();
+                prevent = false;
+            }
+        });
     }, { passive: false });
 });
