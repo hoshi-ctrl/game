@@ -92,14 +92,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const items = [
         new Item('剣', 0, 10, 0, 0, 100),
         new Item('盾', 0, 0, 10, 0, 100),
-        new Item('靴', 0, 0, 0, 10, 100)
+        new Item('靴', 0, 0, 0, 10, 100),
+        new Item('強いペン', 500, 500, 500, 5000, 500)
     ];
 
     const monsters = [
         new Entity('スライム', 30, 5, 2, 3),
         new Entity('ゴブリン', 50, 8, 3, 6),
         new Entity('オーク', 80, 15, 10, 5),
-        new Entity('ドラゴン', 150, 30, 20, 10)
+        new Entity('ドラゴン', 150, 30, 20, 10),
+        new Entity('がみがみおやじ', 300, 60, 40, 20),
+        new Entity('ロードナイト', 600, 90, 80, 40),
+        new Entity('ハム', 1200, 1000, 1000, 1000)
     ];
 
     let currentMonsterIndex = 0;
