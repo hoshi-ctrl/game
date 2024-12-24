@@ -1,21 +1,22 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TEST</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ハムスターのゲーム</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #f0f0f0;
+        }
+        canvas {
+            display: block;
+        }
+    </style>
 </head>
 <body>
-  <h1>TEST</h1>
-  <div>
-    <p id="enemy">敵 HP: 50, 攻撃力: 5</p>
-    <p id="status">HP: 100, 攻撃力: 10, レベル: 1, EXP: 0, お金: 0</p>
-    <button id="fightButton">敵と戦う</button>
-    <button id="buyWeaponButton">攻撃力を上げる武器を購入（100お金）</button>
-    <button id="buyArmorButton">HPを上げる防具を購入（100お金）</button>
-    <button id="saveButton">保存</button>
-    <p id="log"></p>
-  </div>
-  <script src="game.js"></script>
+    <canvas id="gameCanvas"></canvas>
+    <script src="game.js"></script>
 </body>
 </html>
