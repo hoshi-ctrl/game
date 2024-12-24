@@ -3,20 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ハムスターのゲーム</title>
+    <title>RPG Game</title>
     <style>
         body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
             margin: 0;
-            overflow: hidden;
             background-color: #f0f0f0;
         }
-        canvas {
-            display: block;
+        #gameInterface {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px;
+        }
+        #store, #temple, #adventure, #save {
+            margin: 10px;
+            padding: 10px 20px;
+            border: 1px solid #000;
+            background-color: #fff;
+        }
+        #gameInfo, #battleLog, #inventory {
+            margin: 20px;
+            padding: 10px;
+            border: 1px solid #000;
+            background-color: #fff;
+            width: 80%;
         }
     </style>
 </head>
 <body>
-    <canvas id="gameCanvas"></canvas>
+    <div id="gameInterface">
+        <div id="gameInfo">
+            <p id="playerStats">プレイヤー情報</p>
+        </div>
+        <div id="buttons">
+            <button id="store">お店</button>
+            <button id="temple">神殿</button>
+            <button id="adventure">冒険</button>
+            <button id="save">保存</button>
+        </div>
+        <div id="battleLog">ログ</div>
+        <div id="inventory">インベントリ</div>
+    </div>
     <script src="game.js"></script>
 </body>
 </html>
