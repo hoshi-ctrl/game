@@ -15,6 +15,7 @@
             background-color: #f0f0f0;
             font-family: Arial, sans-serif;
         }
+
         #gameInfo, #controls, #log, #store, #temple {
             margin: 10px;
             padding: 20px;
@@ -24,9 +25,11 @@
             max-width: 500px;
             box-sizing: border-box;
         }
+
         #store, #temple {
             display: none;
         }
+
         button {
             display: inline-block;
             width: calc(100% - 10px);
@@ -39,15 +42,18 @@
             border-radius: 4px;
             cursor: pointer;
         }
+
         button:hover {
             background-color: #0056b3;
         }
+
         #battleLog {
             max-height: 200px;
             overflow-y: auto;
             border: 1px solid #ccc;
             padding: 10px;
         }
+
         #battleLog div {
             margin-bottom: 8px;
         }
@@ -58,15 +64,6 @@
         <h2>プレイヤー情報</h2>
         <div id="playerStats"></div>
     </div>
-    <div id="controls">
-        <button id="storeButton">お店</button>
-        <button id="adventureButton">冒険</button>
-        <button id="templeButton">神殿</button>
-    </div>
-    <div id="log">
-        <h2>ログ</h2>
-        <div id="battleLog"></div>
-    </div>
     <div id="store">
         <h2>お店の商品</h2>
         <ul id="storeItems"></ul>
@@ -76,6 +73,17 @@
         <h2>ジョブの変更</h2>
         <ul id="jobList"></ul>
         <button id="closeTemple">閉じる</button>
+    </div>
+    <div id="controls">
+        <button id="storeButton">お店</button>
+        <button id="adventureButton">冒険</button>
+        <button id="templeButton">神殿</button>
+        <button id="saveButton">セーブ</button>
+        <button id="loadButton">ロード</button>
+    </div>
+    <div id="log">
+        <h2>ログ</h2>
+        <div id="battleLog"></div>
     </div>
     <script src="game.js"></script>
 </body>
