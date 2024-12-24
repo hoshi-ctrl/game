@@ -57,6 +57,14 @@ document.addEventListener('DOMContentLoaded', () => {
         new Item('靴', 0, 0, 0, 10, 100)
     ];
 
+    const monsters = [
+        new Entity('スライム', 30, 5, 2, 3),
+        new Entity('ゴブリン', 50, 8, 3, 6),
+        new Entity('オーク', 80, 15, 10, 5),
+        new Entity('ドラゴン', 150, 30, 20, 10)
+    ];
+
+    let currentMonsterIndex = 0;
     const player = new Player('プレイヤー', jobs.villager, 100, 10, 5, 5);
 
     function updatePlayerStats() {
@@ -138,28 +146,40 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function startAdventure() {
-        const monster = new Entity('ゴブリン', 50, 8, 3, 6);
+        if(currentMonsterIndex >= monsters.length) {
+            logMessage("全てのモンスターを倒しました！");
+            return;
+        }
+
+        const monster = monsters[currentMonsterIndex];
         logMessage(`${monster.name}が現れた！`);
 
-        const playerAttack = player.attack - monster.defense;
-        const monsterAttack = monster.attack - player.defense;
+        while(player.hp > 0 && monster.hp > 0) {
+            const playerAttack = Math.max(player.attack - monster.defense, 0);
+            const monsterAttack = Math.max(monster.attack - player.defense, 0);
 
-        if (playerAttack > 0) {
             monster.hp -= playerAttack;
-        }
-        if (monsterAttack > 0) {
+            if(monster.hp <= 0) {
+                logMessage(`${monster.name}を倒した！ 経験値とお金を得た！`);
+                player.exp += 10;
+                player.money += 20;
+                currentMonsterIndex++;
+
+                // 次のモンスターがいる場合は次の冒険で出現
+                if (currentMonsterIndex < monsters.length) {
+                    logMessage(`${monsters[currentMonsterIndex].name}が次に出現します。`);
+                }
+
+                break;
+            }
+
             player.hp -= monsterAttack;
-        }
-
-        if (monster.hp <= 0) {
-            logMessage(`${monster.name}を倒した！ 経験値とお金を得た！`);
-            player.exp += 10;
-            player.money += 20;
-        }
-
-        if (player.hp <= 0) {
-            logMessage('プレイヤーは死んでしまった...');
-            player.hp = player.job.baseStats.hp;
+            if(player.hp <= 0) {
+                logMessage('プレイヤーは死んでしまった...');
+                // プレイヤーのHPを回復
+                player.hp = player.job.baseStats.hp;
+                break;
+            }
         }
 
         updatePlayerStats();
