@@ -31,7 +31,11 @@ function levelUp() {
 
 function logMessage(message) {
   const log = document.getElementById('log');
-  log.innerText += message + "";
+  if (log) { // 要素が存在する場合だけ実行
+    log.innerText += `${message}`;
+  } else {
+    console.error("log要素が見つかりません。");
+  }
 }
 
 document.getElementById('fightButton').addEventListener('click', () => {
