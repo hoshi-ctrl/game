@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>基礎的な勉強用</title>
+    <title>勉強用</title>
     <style>
         body {
             display: flex;
@@ -20,9 +20,30 @@
             padding: 20px;
             border: 1px solid #000;
             background-color: #fff;
+            width: 90%;
+            max-width: 500px;
+            box-sizing: border-box;
         }
         #store, #temple {
             display: none;
+        }
+        button {
+            display: inline-block;
+            width: calc(100% - 10px);
+            padding: 15px;
+            margin: 5px;
+            font-size: 18px;
+            border: none;
+            color: #fff;
+            background-color: #007bff;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #battleLog div {
+            margin-bottom: 8px;
         }
     </style>
 </head>
