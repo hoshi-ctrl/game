@@ -209,9 +209,10 @@ document.addEventListener('DOMContentLoaded', () => {
             player.hp -= monsterAttack;
             if (player.hp <= 0) {
                 logMessage('プレイヤーは死んでしまった...');
-                // プレイヤーのHPを回復
+                // プレイヤーのHPを回復し、モンスターリストをリセット
                 player.hp = player.job.baseStats.hp;
                 currentMonsterIndex = 0;
+                logMessage('最初のモンスターから再挑戦します！');
                 break;
             }
         }
